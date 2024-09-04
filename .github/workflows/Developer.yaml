@@ -71,6 +71,6 @@ jobs:
           working-directory: ./terraform
 
       - name: Terraform Apply
-        if: ${{ github.event_name == 'push' }} && ${{ github.ref_name == 'developer' }}
+        if: github.event.pull_request.merged == true
         id: apply
         run: terraform apply plan.tf          
