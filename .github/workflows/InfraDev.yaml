@@ -7,7 +7,7 @@ on:
 
 env:
   TF_WORKSPACE: "dev"  
-  aws-region: "us-easr-1"
+  aws-region: "us-east-1"
 
 jobs:
   InfraDev:
