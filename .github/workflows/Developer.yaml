@@ -4,6 +4,9 @@ on:
   pull_request:
     branches:
       - developer
+  push: 
+    branches:
+      - developer 
 
 env:
   TF_WORKSPACE: "dev"  
@@ -66,3 +69,8 @@ jobs:
           token: ${{ github.token }}
           planfile: plan.tf
           working-directory: ./terraform
+
+      - name: Terraform Apply
+        if: "${{ github.event_name }} == push && ${{ github.ref_name }} == developer"
+        id: apply
+        run: terrafprm apply plan.tf          
