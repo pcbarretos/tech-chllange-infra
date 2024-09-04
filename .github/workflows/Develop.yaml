@@ -33,6 +33,7 @@ jobs:
         uses: hashicorp/setup-terraform@v3       
         with:
           terraform_version: "1.9.5"
+          terraform_wrapper: true
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -59,8 +60,6 @@ jobs:
         id: plan
         run: terraform plan -no-color -out plan.tf
 
-      - run: terraform show -no-color plan.tf
-        id: show
         
       - uses: actions/github-script@v7
         env:
@@ -69,7 +68,7 @@ jobs:
           result-encoding: json
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |            
-            const output = `#### Terraform Plan 📖\`${{ steps.show.outcome }}\`
+            const output = `#### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
 
             <details><summary>Show Plan</summary>
 
