@@ -21,8 +21,8 @@ jobs:
 
     permissions:
       contents: read
-      pull-requests: write
       id-token: write
+      pull-requests: write
 
     steps:
       - name: "Checkout"
@@ -47,7 +47,7 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init -backend-config="./envs/${{ env.TF_WORKSPACE }}/backend.tfvars"
+        run: terraform init -backend-config="/path/to/backend.conf"
 
       - name: Terraform Validate
         id: validate

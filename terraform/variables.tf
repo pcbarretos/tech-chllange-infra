@@ -9,3 +9,18 @@ variable "cluster_name" {
   type        = string
   default     = "tech-challange"
 }
+
+variable "bucket_key" {
+  description = "Ky Bucket"
+  type = string  
+}
+
+variable "dynamodb_table" {
+  description = "DynamoDb table to Lock State"
+  type = string  
+}
+
+variable "bucket_state_name" {
+  description = "Bucket State Name"
+  type = string  
+}
