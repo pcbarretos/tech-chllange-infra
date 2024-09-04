@@ -40,9 +40,9 @@ jobs:
           role-to-assume: ${{ vars.AWS_ASSUME_ROLE_ARN }}
           aws-region: ${{ env.aws-region }}          
       
-      - name: "Set Workspace"
-        run: |
-          terraform workspace show
+      # - name: "Set Workspace"
+      #   run: |
+      #     terraform workspace show
 
       - name: Terraform fmt
         id: fmt
@@ -51,7 +51,7 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init
+        run: terraform init -var-files="./envs/${{ env.TF_WORKSPACE }}"
 
       - name: Terraform Validate
         id: validate
