@@ -42,7 +42,7 @@ jobs:
       
       - name: "Set Workspace"
         run: |
-          terraform workspace select -or-create ${{ env.TF_WORKSPACE }}
+          terraform workspace show
 
       - name: Terraform fmt
         id: fmt
@@ -51,9 +51,7 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: |
-          terraform workspace select ${{ env.TF_WORKSPACE }}
-          terraform init
+        run: terraform init
 
       - name: Terraform Validate
         id: validate
