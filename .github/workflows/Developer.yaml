@@ -1,0 +1,76 @@
+name: "Infra Developer"
+
+on:
+  pull_request:
+    branches:
+      - developer
+  push: 
+    branches:
+      - developer 
+
+env:
+  TF_WORKSPACE: "dev"  
+  aws-region: "us-east-1"
+
+jobs:
+  InfraDev:
+    name: Deploy Infra Developer
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./terraform
+
+    permissions:
+      contents: read
+      id-token: write
+      pull-requests: write
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3       
+        with:
+          terraform_version: "1.9.5"
+          terraform_wrapper: false
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-session-name: GitHub_AWS_Federated_OIDC
+          role-to-assume: ${{ vars.AWS_ASSUME_ROLE_ARN }}
+          aws-region: ${{ env.aws-region }}          
+      
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: true
+
+      - name: Terraform Init
+        id: init
+        run: terraform init -backend-config="./envs/${{ env.TF_WORKSPACE }}/backend.conf"
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+        continue-on-error: true
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -out plan.tf
+
+        
+      - name: Post PR comment
+        uses: borchero/terraform-plan-comment@v2
+        with:
+          token: ${{ github.token }}
+          planfile: plan.tf
+          working-directory: ./terraform
+
+      - name: Terraform Apply
+        if: github.event.pull_request.merged == true
+        id: apply
+        run: terraform apply plan.tf          
