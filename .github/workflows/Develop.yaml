@@ -8,7 +8,6 @@ on:
 env:
   TF_WORKSPACE: "dev"  
   aws-region: "us-east-1"
-  working-directory: ./terraform
 
 jobs:
   InfraDev:
@@ -66,3 +65,4 @@ jobs:
         with:
           token: ${{ github.token }}
           planfile: plan.tf
+          working-directory: ./terraform
