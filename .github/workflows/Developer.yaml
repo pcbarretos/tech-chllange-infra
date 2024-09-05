@@ -66,9 +66,6 @@ jobs:
         id: plan
         run: terraform plan -out plan.tf 
 
-      - run: terraform show plan.tf 
-        id: show
-
       - name: Post PR comment
         uses: borchero/terraform-plan-comment@v2
         with:
@@ -80,40 +77,22 @@ jobs:
       - uses: actions/github-script@v6
         with:
           script: |
-            const { data: comments } = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-            })
-            const botComment = comments.find(comment => {
-              return comment.user.type === 'Bot' && comment.body.includes('Terraform Format and Style')
-            })
-
             const output = `### Terraform Plan ⚙️\`${{ steps.plan.outcome }}\`
 
             <details><summary>Show Plan</summary>
 
             \`\`\`\n
-            ${{ steps.show.outputs.stdout }}
+            ${{ steps.plan.outputs.stdout }}
             \`\`\`
 
             </details>`
 
-            if (botComment) {
-              github.rest.issues.updateComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                comment_id: botComment.id,
-                body: output
-              })
-            } else {
-              github.rest.issues.createComment({
-                issue_number: context.issue.number,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body: output
-              })
-            }
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
         
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
