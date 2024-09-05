@@ -18,8 +18,8 @@ env:
   tf_actions_working_dir: ./terraform
 
 jobs:
-  PlanInfraDev:
-    name: Plan Infra Developer
+  Deploy:
+    name: Terraform Infra Developer
     runs-on: ubuntu-latest
 
     defaults:
@@ -93,6 +93,7 @@ jobs:
 
       - name: Post PR comment
         uses: borchero/terraform-plan-comment@v2
+        if: github.event_name == 'pull_request'
         with:
           token: ${{ github.token }}
           planfile: plan.tf
