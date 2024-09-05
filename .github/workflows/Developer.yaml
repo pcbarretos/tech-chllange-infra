@@ -91,7 +91,6 @@ jobs:
               return comment.user.type === 'Bot' && comment.body.includes('Terraform Format and Style')
             })
 
-            // 2. Prepare format of the comment
             const output = `### Terraform Plan ⚙️ \`${{ steps.show.outcome }}\`
 
             <details><summary>Show Plan</summary>
@@ -100,10 +99,8 @@ jobs:
             ${process.env.PLAN}
             \`\`\`
 
-            </details>
-
-            `;
-            // 3. If we have a comment, update it, otherwise create a new one
+            </details>;
+            
             if (botComment) {
               github.rest.issues.updateComment({
                 owner: context.repo.owner,
