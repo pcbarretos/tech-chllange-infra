@@ -66,7 +66,7 @@ jobs:
         id: plan
         run: terraform plan -out plan.tf -no-color
       
-      - run: terraform show plan.tf"
+      - run: terraform show plan.tf
         id: show
 
       - name: Post PR comment
