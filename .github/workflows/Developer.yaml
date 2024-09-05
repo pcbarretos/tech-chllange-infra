@@ -64,9 +64,10 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -out plan.tf
-      
-      - run: echo "$GITHUB_STEP_SUMMARY=plan.tf"
+        run: terraform plan -out plan.tf -no-color
+          
+      - run: terraform show plan.tf
+        id: show  
         
       - name: Post PR comment
         uses: borchero/terraform-plan-comment@v2
@@ -78,7 +79,7 @@ jobs:
           
       - uses: actions/github-script@v7
         env:
-          PLAN: "${{ steps.plan.outputs.stdout }}"
+          PLAN: "${{ steps.show.outputs.stdout }}"
         with:
           script: |
             const { data: comments } = await github.rest.issues.listComments({
@@ -90,21 +91,10 @@ jobs:
               return comment.user.type === 'Bot' && comment.body.includes('Terraform Format and Style')
             })
 
-            // 2. Prepare format of the comment
-            const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
-            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
-            #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
-            <details><summary>Validation Output</summary>
 
-            \`\`\`\n
-            ${{ steps.validate.outputs.stdout }}
-            \`\`\`
+            const output = `#### Terraform Plan 📖\`${{ steps.show.outcome }}\`
 
-            </details>
-
-            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
-
-            <details><summary>Show Plan</summary>
+            <details><summary>Terraform Plan</summary>
 
             \`\`\`\n
             ${process.env.PLAN}
@@ -112,9 +102,6 @@ jobs:
 
             </details>
 
-            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
-
-            // 3. If we have a comment, update it, otherwise create a new one
             if (botComment) {
               github.rest.issues.updateComment({
                 owner: context.repo.owner,
