@@ -49,24 +49,29 @@ jobs:
           aws-region: ${{ env.aws-region }}          
       
       - name: Terraform fmt
+        if: github.event_name == 'pull_request'
         id: fmt
         run: terraform fmt -check
         continue-on-error: true
 
       - name: Terraform Init
+        if: github.event_name == 'pull_request'
         id: init
         run: terraform init -backend-config="./envs/${{ env.TF_WORKSPACE }}/backend.conf"
 
       - name: Terraform Validate
+        if: github.event_name == 'pull_request'
         id: validate
         run: terraform validate -no-color
         continue-on-error: true
 
       - name: Terraform Plan
+        if: github.event_name == 'pull_request'
         id: plan
         run: terraform plan -out plan.tf -no-color
           
       - uses: actions/github-script@v7
+        if: github.event_name == 'pull_request'
         with:
           script: |
             const output = `### Terraform Plan ⚙️\`${{ steps.plan.outcome }}\`
