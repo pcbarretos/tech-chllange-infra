@@ -35,7 +35,7 @@ jobs:
       #   with:
       #     path: ./terraform
 
-      - uses: .github/workflows/action.yaml
+      - uses: ./.github/workflows/action.yaml
 
       - uses: actions/github-script@v7
         if: github.event_name == 'pull_request'
