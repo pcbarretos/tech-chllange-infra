@@ -89,14 +89,15 @@ jobs:
             const botComment = comments.find(comment => {
               return comment.user.type === 'Bot' && comment.body.includes('Terraform Format and Style')
             })
-
+            
+            const output = `### Show Plan ##\`
             <details><summary>Show Plan</summary>
 
             \`\`\`\n
             ${process.env.PLAN}
             \`\`\`
 
-            </details>            
+            </details>
 
             if (botComment) {
               github.rest.issues.updateComment({
