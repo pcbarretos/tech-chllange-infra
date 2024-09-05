@@ -32,14 +32,7 @@ jobs:
     steps:
       # - name: "Checkout"
       #   uses: actions/checkout@v4
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-session-name: GitHub_AWS_OIDC
-          role-to-assume: ${{ vars.AWS_ASSUME_ROLE_ARN }}
-          aws-region: ${{ env.aws-region }}
-        
+       
       - name: Terraform
         uses: ./.github/workflows/action.yaml
 
