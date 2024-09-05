@@ -27,7 +27,7 @@ jobs:
     with:          
       aws-assume-role-arn: "arn:aws:iam::058264556533:role/terraform-role"
       aws-region: ${{ env.aws-region }}
-      TF_WORKSPACE: ${{ env.TF_WORKSPACE }}
+      environment: ${{ env.TF_WORKSPACE }}
      
 
 
