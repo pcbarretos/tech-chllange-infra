@@ -103,4 +103,4 @@ jobs:
       - name: Terraform Apply
         if: ${{ env.destroy != true && github.event_name == 'push'}} 
         id: apply
-        run: terraform apply plan.tf -var-file=./envs/${{ env.TF_WORKSPACE }}/terraform.tfvars"
+        run: terraform apply plan.tf -var-file="./envs/${{ env.TF_WORKSPACE }}/terraform.tfvars"
