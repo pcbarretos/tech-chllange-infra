@@ -65,7 +65,7 @@ jobs:
       - name: Terraform Destroy
         if: ${{ env.destroy == true }}
         id: destroy
-        run: terraform plan -destroy -var-file=./envs/${{ env.TF_WORKSPACE }}/terraform.tfvars"
+        run: terraform plan -destroy -var-file="./envs/${{ env.TF_WORKSPACE }}/terraform.tfvars"
 
       - name: Terraform Plan
         if: ${{ env.destroy != true && github.event_name == 'pull_request'}}
