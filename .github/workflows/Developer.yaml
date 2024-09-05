@@ -92,13 +92,12 @@ jobs:
 
 
             const output = `#### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
-
             <details><summary>Terraform Plan</summary>
 
             \`\`\`\n
             ${process.env.PLAN}
             \`\`\`
-
+            
             </details>
 
             if (botComment) {
