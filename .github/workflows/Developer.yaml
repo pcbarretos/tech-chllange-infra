@@ -15,6 +15,7 @@ on:
 env:
   TF_WORKSPACE: "dev"  
   aws-region: "us-east-1"
+  tf_actions_working_dir: ./terraform
 
 jobs:
   PlanInfraDev:
@@ -64,7 +65,7 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -out plan.tf
+        run: terraform plan -out plan.tf -no-color
         
         
       - name: Post PR comment
