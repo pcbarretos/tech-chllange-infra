@@ -7,6 +7,9 @@ on:
         type: boolean
         required: true
         default: false
+      aws-assume-role-arn:
+        type: string
+        required: true        
       
 
 jobs:
@@ -32,8 +35,8 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-session-name: GitHub_AWS_OIDC
-          role-to-assume: ${{ vars.AWS_ASSUME_ROLE_ARN }}
-          aws-region: ${{ env.aws-region }}          
+          aws-region: ${{ env.aws-region }}
+          aws-assume-role-arn: ${{ inputs.aws-assume-role-arn }}      
 
       - name: Terraform Init
         id: init  
