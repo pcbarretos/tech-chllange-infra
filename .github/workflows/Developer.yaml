@@ -91,7 +91,7 @@ jobs:
               body: output
             })
 
-      - name: Post PR comment
+      - name: Terraform Resouces List
         uses: borchero/terraform-plan-comment@v2
         if: github.event_name == 'pull_request'
         with:
