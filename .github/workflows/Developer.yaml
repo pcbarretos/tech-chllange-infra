@@ -65,9 +65,6 @@ jobs:
       - name: Terraform Plan
         id: plan
         run: terraform plan -out plan.tf -no-color
-      
-      - run: terraform show plan.tf
-        id: show
 
       - name: Post PR comment
         uses: borchero/terraform-plan-comment@v2
@@ -79,7 +76,7 @@ jobs:
           
       - uses: actions/github-script@v7
         env:
-          PLAN: "${{ steps.show.outputs.stdout }}"
+          PLAN: "${{ steps.plan.outputs.stdout }}"
         with:
           script: |
             const { data: comments } = await github.rest.issues.listComments({
@@ -91,7 +88,7 @@ jobs:
               return comment.user.type === 'Bot' && comment.body.includes('Terraform Format and Style')
             })
 
-            const output = `### Terraform Plan ⚙️ \`${{ steps.show.outcome }}\`
+            const output = `### Terraform Plan ⚙️\`${{ steps.plan.outcome }}\`
 
             <details><summary>Show Plan</summary>
 
@@ -99,8 +96,8 @@ jobs:
             ${process.env.PLAN}
             \`\`\`
 
-            </details>;
-            
+            </details>`
+
             if (botComment) {
               github.rest.issues.updateComment({
                 owner: context.repo.owner,
