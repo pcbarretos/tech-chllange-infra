@@ -36,8 +36,8 @@ jobs:
           role-to-assume: ${{ vars.AWS_ASSUME_ROLE_ARN }}
           aws-region: ${{ env.aws-region }}
         
-      - name: Terraform Apply
-        uses: ./.github/workflows/workflow.yaml
+      - name: Terraform
+        uses: ./.github/workflows/action.yaml
 
       - uses: actions/github-script@v7
         if: github.event_name == 'pull_request'

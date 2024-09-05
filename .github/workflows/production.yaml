@@ -37,7 +37,7 @@ jobs:
           aws-region: ${{ env.aws-region }}
         
       - name: Terraform Apply
-        uses: ./.github/workflows/workflow.yaml
+        uses: ./.github/workflows/action.yaml
 
       - uses: actions/github-script@v7
         if: github.event_name == 'pull_request'
