@@ -5,14 +5,15 @@ on:
     inputs:
       destroy:
         type: boolean
-        required: true
+        required: false
         default: false
       aws-assume-role-arn:
         type: string
         required: true
       aws-region:
         type: string
-        required: true
+        required: false
+        default: "us-east-1"
       environment:
         type: string
         required: true        
