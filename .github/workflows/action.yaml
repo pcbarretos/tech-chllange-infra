@@ -30,8 +30,6 @@ jobs:
     steps:
       - name: "Checkout"
         uses: actions/checkout@v4
-        # with:
-        #   path: ./terraform
         
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -70,34 +68,34 @@ jobs:
         id: plan
         run: terraform plan -out plan.tf -no-color     
 
-      - uses: actions/github-script@v7
-        if: github.event_name == 'pull_request'
-        with:
-          script: |
-            const output = `### Terraform Plan ⚙️\`${{ steps.plan.outcome }}\`
+      # - uses: actions/github-script@v7
+      #   if: github.event_name == 'pull_request'
+      #   with:
+      #     script: |
+      #       const output = `### Terraform Plan ⚙️\`${{ steps.plan.outcome }}\`
 
-            <details><summary>Show Plan</summary>
+      #       <details><summary>Show Plan</summary>
 
-            \`\`\`\n
-            ${{ steps.plan.outputs.stdout }}
-            \`\`\`
+      #       \`\`\`\n
+      #       ${{ steps.plan.outputs.stdout }}
+      #       \`\`\`
 
-            </details>`
+      #       </details>`
 
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: output
-            })
+      #       github.rest.issues.createComment({
+      #         issue_number: context.issue.number,
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         body: output
+      #       })
 
-      - name: Terraform Resouces List
-        uses: borchero/terraform-plan-comment@v2
-        if: github.event_name == 'pull_request'
-        with:
-          token: ${{ github.token }}
-          planfile: plan.tf
-          working-directory: ./terraform
+      # - name: Terraform Resouces List
+      #   uses: borchero/terraform-plan-comment@v2
+      #   if: github.event_name == 'pull_request'
+      #   with:
+      #     token: ${{ github.token }}
+      #     planfile: plan.tf
+      #     working-directory: ./terraform
 
       - name: Terraform Apply
         if: ${{ inputs.destroy != true && github.event_name == 'push'}} 
