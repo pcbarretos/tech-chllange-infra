@@ -20,12 +20,12 @@ on:
       
 
 jobs:
-  terraform:
+  Terraform:
     runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
-        # working-directory: ./terraform
+        working-directory: ./terraform
 
     steps:
       - name: "Checkout"
