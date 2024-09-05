@@ -30,13 +30,12 @@ jobs:
         shell: bash
         # working-directory: ./terraform
     steps:
-      - name: "Checkout"
-        uses: actions/checkout@v4
-        with:
-          path: ./terraform
-       
-      - name: Terraform
-        uses: ./.github/workflows/action.yaml
+      # - name: "Checkout"
+      #   uses: actions/checkout@v4
+      #   with:
+      #     path: ./terraform
+
+      - uses: ./.github/workflows/action.yaml
 
       - uses: actions/github-script@v7
         if: github.event_name == 'pull_request'
