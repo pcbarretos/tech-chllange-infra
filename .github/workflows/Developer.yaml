@@ -66,8 +66,9 @@ jobs:
         id: plan
         run: terraform plan -out plan.tf -no-color
       
-      - run: echo "$GITHUB_STEP_SUMMARY=plan.tf"
-        
+      - run: terraform show plan.tf"
+        id: show
+
       - name: Post PR comment
         uses: borchero/terraform-plan-comment@v2
         with:
@@ -78,7 +79,7 @@ jobs:
           
       - uses: actions/github-script@v7
         env:
-          PLAN: "${{ steps.plan.outputs.stdout }}"
+          PLAN: "${{ steps.show.outputs.stdout }}"
         with:
           script: |
             const { data: comments } = await github.rest.issues.listComments({
@@ -91,7 +92,7 @@ jobs:
             })
 
             // 2. Prepare format of the comment
-            const output = `### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+            const output = `### Terraform Plan ⚙️ \`${{ steps.show.outcome }}\`
 
             <details><summary>Show Plan</summary>
 
@@ -101,7 +102,7 @@ jobs:
 
             </details>
 
-            *`;
+            `;
             // 3. If we have a comment, update it, otherwise create a new one
             if (botComment) {
               github.rest.issues.updateComment({
