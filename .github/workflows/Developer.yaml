@@ -65,6 +65,8 @@ jobs:
       - name: Terraform Plan
         id: plan
         run: terraform plan -out plan.tf
+        
+      - run: echo ${{ steps.plan.outputs.stdout }}
 
         
       - name: Post PR comment
@@ -75,13 +77,32 @@ jobs:
           working-directory: ./terraform
 
           
-      - uses: actions/github-script@v6
-        if: github.event_name == 'pull_request'
+      - uses: actions/github-script@v7
         env:
-          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+          PLAN: "${{ steps.plan.outputs.stdout }}"
         with:
           script: |
-            const output = `#### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            })
+            const botComment = comments.find(comment => {
+              return comment.user.type === 'Bot' && comment.body.includes('Terraform Format and Style')
+            })
+
+            // 2. Prepare format of the comment
+            const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+            
+            <details><summary>Validation Output</summary>
+
+            \`\`\`\n
+            ${{ steps.validate.outputs.stdout }}
+            \`\`\`
+
+            </details>
+
+            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
 
             <details><summary>Show Plan</summary>
 
@@ -91,14 +112,24 @@ jobs:
 
             </details>
 
-            *Pusher: @${{ github.actor }}`*`;
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`;
 
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: output
-            })
+            // 3. If we have a comment, update it, otherwise create a new one
+            if (botComment) {
+              github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: output
+              })
+            } else {
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: output
+              })
+            }
         
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
