@@ -69,7 +69,7 @@ jobs:
       - name: Terraform Plan
         if: ${{ env.destroy != true && github.event_name == 'pull_request'}}
         id: plan
-        run: terraform plan -out plan.tf -var-file=./envs/${{ env.TF_WORKSPACE }}/terraform.tfvars" -no-color 
+        run: terraform plan -out plan.tf -var-file="./envs/${{ env.TF_WORKSPACE }}/terraform.tfvars" -no-color 
 
       - uses: actions/github-script@v7
         if: github.event_name == 'pull_request'
