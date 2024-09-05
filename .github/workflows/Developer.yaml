@@ -48,19 +48,16 @@ jobs:
           role-to-assume: ${{ vars.AWS_ASSUME_ROLE_ARN }}
           aws-region: ${{ env.aws-region }}          
       
-      - name: Terraform fmt
-        if: github.event_name == 'pull_request'
+      - name: Terraform fmt      
         id: fmt
         run: terraform fmt -check
         continue-on-error: true
 
       - name: Terraform Init
-        if: github.event_name == 'pull_request'
         id: init
         run: terraform init -backend-config="./envs/${{ env.TF_WORKSPACE }}/backend.conf"
 
       - name: Terraform Validate
-        if: github.event_name == 'pull_request'
         id: validate
         run: terraform validate -no-color
         continue-on-error: true
