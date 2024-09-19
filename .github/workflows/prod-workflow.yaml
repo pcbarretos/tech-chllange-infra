@@ -1,4 +1,4 @@
-name: "Terraform Developer"
+name: "Terraform Production"
 
 on:
   push:
@@ -24,6 +24,7 @@ permissions:
 
 jobs:
   Terraform:
+    needs: tfdocs
     runs-on: ubuntu-latest
     defaults:
       run:
