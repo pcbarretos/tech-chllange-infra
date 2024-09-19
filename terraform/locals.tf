@@ -1,6 +1,7 @@
 locals {
-  common_tags = {
+  azs      = slice(data.aws_availability_zones.available.names, 0, 3)
+  tags = {
     ManagedBy = "Terraform"
-    Owner     = "Pos Technology"
+    Owner     = "PósTech"
   }
 }
