@@ -25,7 +25,6 @@ permissions:
 jobs:
   Terraform:
     runs-on: ubuntu-latest
-    needs: tfdocs
     defaults:
       run:
         shell: bash
