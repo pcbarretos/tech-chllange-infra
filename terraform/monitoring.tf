@@ -1,6 +1,6 @@
 module "metrics-server" {
-  source             = "lablabs/eks-kube-state-metrics/aws"
-  version            = "0.8.0"
+  source  = "lablabs/eks-kube-state-metrics/aws"
+  version = "0.8.0"
 
   k8s_namespace      = "kube-system"
   helm_release_name  = "metrics-server"
@@ -17,8 +17,8 @@ module "metrics-server" {
 }
 
 module "kube-state-metrics" {
-  source             = "lablabs/eks-kube-state-metrics/aws"
-  version            = "0.8.0"
+  source  = "lablabs/eks-kube-state-metrics/aws"
+  version = "0.8.0"
 
   k8s_namespace      = "kube-state-metrics"
   helm_release_name  = "kube-state-metrics"
@@ -35,8 +35,8 @@ module "kube-state-metrics" {
 }
 
 module "prometheus-stack" {
-  source             = "lablabs/eks-kube-state-metrics/aws"
-  version            = "0.8.0"
+  source  = "lablabs/eks-kube-state-metrics/aws"
+  version = "0.8.0"
 
   k8s_namespace      = var.prometheus_stack_namespace
   helm_release_name  = "prometheus-stack"
