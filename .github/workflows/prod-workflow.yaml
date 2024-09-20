@@ -23,7 +23,7 @@ permissions:
   pull-requests: write      
 
 jobs:
-  Terraform:
+  Terraform Infra Prod:
     runs-on: ubuntu-latest
     defaults:
       run:
