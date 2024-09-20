@@ -3,6 +3,7 @@
 ## Pre Requirements To Run This Pipeline.
 -
 - Create a S3 Bucket in AWS Console (Unique Global Name)
+  - Enable Versioning Bucket
 - Create a DynamoDB Table in AWS Console
   - Put In *Partition key* to *LockID* And Set *String* And *Crete Table*
 
