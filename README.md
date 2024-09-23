@@ -8,6 +8,33 @@
 	/>
 </p>
 
+## Infra Info
+- VPC
+  - 1 Vpc *(us-east-1)*
+- Subnets
+  - 3 publicas *(us-east-1a us-east-1b us-east-1c)*
+  - 3 privadas *(us-east-1a us-east-1b us-east-1c)*
+  - 3 intra (Do EKS Control Plane) *(us-east-1a us-east-1b us-east-1c)*
+- Route Tables
+  - 1 Publica 
+  - 1 Privada
+  - 1 Intra
+- Nat
+  - 1 NatGateway
+- IGW
+  - 1 Internet Gateway
+- EKS  
+  - Mult Az em 3 Zonas de Disponibilidade
+- AutoScaller
+  - Karpenter
+- ECR
+  - 1 Registry Pras imagens docker
+- Resoucer
+  - Metrics Server
+  - Kube State Metrics
+  - Load Balancer Controller
+    - Nginx
+
 
 ### Pre Requirements To Run This Pipeline.
 
