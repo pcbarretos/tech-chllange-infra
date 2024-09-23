@@ -9,4 +9,6 @@ max_size                   = 4
 desired_size               = 2
 metrics_server_version     = "3.12.1"
 kube_state_metrics_version = "5.25.1"
-prometheus_stack_versions  = "62.7.0"
+ecr_repository_name        = "prod-tech-challange"
+# prometheus_stack_versions  = "62.7.0"
+# cert_manager_version       = "1.15.3"

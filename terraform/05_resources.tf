@@ -34,24 +34,24 @@ module "kube-state-metrics" {
   ]
 }
 
-module "prometheus-stack" {
-  source  = "lablabs/eks-kube-state-metrics/aws"
-  version = "0.8.0"
-
-  k8s_namespace      = var.prometheus_stack_namespace
-  helm_release_name  = "prometheus-stack"
-  helm_repo_url      = "https://prometheus-community.github.io/helm-charts"
-  helm_chart_name    = "kube-prometheus-stack"
-  helm_chart_version = var.prometheus_stack_versions
-
-  settings = {
-    "kubeStateMetrics.enabled" = false
-  }
-
-  depends_on = [
-    module.eks.eks_managed_node_groups,
-    helm_release.karpenter,
-    kubectl_manifest.karpenter_node_class,
-    kubectl_manifest.karpenter_node_pool
-  ]
-}
+# module "prometheus-stack" {
+#   source  = "lablabs/eks-kube-state-metrics/aws"
+#   version = "0.8.0"
+#
+#   k8s_namespace      = var.prometheus_stack_namespace
+#   helm_release_name  = "prometheus-stack"
+#   helm_repo_url      = "https://prometheus-community.github.io/helm-charts"
+#   helm_chart_name    = "kube-prometheus-stack"
+#   helm_chart_version = var.prometheus_stack_versions
+#
+#   settings = {
+#     "kubeStateMetrics.enabled" = false
+#   }
+#
+#   depends_on = [
+#     module.eks.eks_managed_node_groups,
+#     helm_release.karpenter,
+#     kubectl_manifest.karpenter_node_class,
+#     kubectl_manifest.karpenter_node_pool
+#   ]
+# }

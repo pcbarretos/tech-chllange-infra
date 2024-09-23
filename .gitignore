@@ -39,3 +39,7 @@ terraform.rc
 ## IDE
 .idea
 .vscode
+tech-challange
+manifests
+deploy
+other
