@@ -7,6 +7,7 @@ module "eks" {
 
   enable_cluster_creator_admin_permissions = var.creator_admin_permissions
   cluster_endpoint_public_access           = var.cluster_endpoint_public_access
+  authentication_mode                      = "API"
 
   cluster_addons = {
     coredns = {
@@ -14,6 +15,7 @@ module "eks" {
     }
     eks-pod-identity-agent = {
       most_recent = true
+
     }
     kube-proxy = {
       most_recent = true

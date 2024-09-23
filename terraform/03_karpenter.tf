@@ -3,9 +3,7 @@ module "karpenter" {
   version = "20.24.0"
 
   cluster_name = module.eks.cluster_name
-
   enable_v1_permissions = true
-
   enable_pod_identity             = true
   create_pod_identity_association = true
 
@@ -15,8 +13,6 @@ module "karpenter" {
 
   tags = local.tags
 }
-
-
 
 resource "helm_release" "karpenter" {
   namespace           = "kube-system"
@@ -44,7 +40,10 @@ resource "helm_release" "karpenter" {
       repository_password
     ]
   }
-  depends_on = [module.eks, module.eks.eks_managed_node_groups]
+  depends_on = [
+    module.eks,
+    module.eks.eks_managed_node_groups
+  ]
 }
 
 resource "kubectl_manifest" "karpenter_node_class" {
@@ -95,16 +94,16 @@ resource "kubectl_manifest" "karpenter_node_pool" {
               values: ["t"]
             - key: "karpenter.k8s.aws/instance-family"
               operator: In
-              values: ["t2","t3","t3a","t4g"]
+              values: ["t3","t3a","t4g"]
             - key: "karpenter.k8s.aws/instance-size"
               operator: NotIn
-              values: ["nano", "micro"]
+              values: ["nano", "micro", "small"]
             - key: "karpenter.k8s.aws/instance-cpu"
               operator: In
               values: ["2"]
             - key: "karpenter.k8s.aws/instance-hypervisor"
               operator: In
-              values: ["nitro","xen"]
+              values: ["nitro"]
             - key: "karpenter.k8s.aws/instance-generation"
               operator: Gt
               values: ["2"]

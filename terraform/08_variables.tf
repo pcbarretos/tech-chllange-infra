@@ -3,6 +3,12 @@ variable "vpc_name" {
   type        = string
 }
 
+variable "region" {
+  description = "Name of region"
+  type        = string
+  default     = "us-east-1"
+}
+
 variable "vpc_cidr" {
   description = "CIDR block for VPC"
   type        = string
@@ -117,4 +123,19 @@ variable "prometheus_stack_namespace" {
   description = "Namespace of the Prometheus Stack install Helm Chart"
   type        = string
   default     = "monitoring"
+}
+variable "cert_manager_namespace" {
+  description = "Kubernetes Namespace of the Cert Manager Helm Chart"
+  type        = string
+  default     = "cert-manager"
+}
+
+variable "cert_manager_version" {
+  description = "Version of Cert Manager to install"
+  type        = string
+}
+
+variable "ecr_repository_name" {
+  description = "Name of the ECR repository."
+  type        = string
 }
